@@ -1,13 +1,20 @@
-const mysql = require('mysql2/promise');
 const dbConfig = require('../configs/db.config');
+const Sequelize = require("sequelize");
 
-async function query(sql, params) {
-  const connection = await mysql.createConnection(dbConfig);
-  const [results, ] = await connection.execute(sql, params);
+const sequelize = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
+  host: dbConfig.host,
+  dialect: dbConfig.dialect,
+  // dialectOptions: { useUTC: false },
+  // operatorsAliases: false,
+  // timeZone: "+6:00",
+  pool: {
+    max: dbConfig.pool.max,
+    min: dbConfig.pool.min,
+    acquire: dbConfig.pool.acquire,
+    idle: dbConfig.pool.idle,
+  }
+});
 
-  return results;
-}
+// const sequelize = new Sequelize('postgres://postgres:password@localhost:5432/dbname');
 
-module.exports = {
-  query
-}
+module.exports = { sequelize, Sequelize };
