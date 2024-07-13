@@ -3,40 +3,39 @@ const helper = require('../utils/helper.util.js');
 const config = require('../configs/general.config.js');
 const { Op } = require('sequelize');
 
-const FoodItem = db.FoodItem;
+const MealWeekDay = db.MealWeekDay;
 
 async function getMultiple(page = 1) {
 
   const offset = helper.getOffset(page, config.listPerPage);
-  const rows = await FoodItem.findAll({ include: { model: db.FoodCategory, as: 'foodCategory' }, offset, limit: config.listPerPage });;
+  const rows = await MealWeekDay.findAll({ offset, limit: config.listPerPage });;
   const data = helper.emptyOrRows(rows);
   const meta = { page };
   return { data, meta };
 
 }
 
-async function getSingle({ id, name } = {}) {
+async function getSingle({ id, day } = {}) {
   let where = { [Op.or]: {} };
 
   if (id) where[Op.or]["id"] = { [Op.eq]: id };
-  if (name) where[Op.or]["name"] = { [Op.eq]: name };
+  if (day) where[Op.or]["day"] = { [Op.eq]: day };
 
-  const resUser = await FoodItem.findOne({ where });
-  return resUser;
+  return await MealWeekDay.findOne({ where });
 }
 
-async function create({ name, foodCategoryId }) {
+async function create({ day }) {
 
-  return FoodItem.create({ name, foodCategoryId })
+  return MealWeekDay.create({ day })
 }
 
 async function update(id, userDatas) {
 
-  return FoodItem.update(userDatas, { where: { id } })
+  return MealWeekDay.update(userDatas, { where: { id } })
 }
 
 async function remove(id) {
-  return FoodItem.destroy({
+  return MealWeekDay.destroy({
     where: { id }
   });
 }

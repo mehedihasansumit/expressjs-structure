@@ -10,8 +10,8 @@ router.get('/', verifyUser, verifyRole, foodItemsController.get);
 /* POST user */
 router.post('/', verifyUser, verifyRole, foodItemsController.create);
 
-/* PUT user */
-router.put('/:id', verifyUser, verifyRole, foodItemsController.update);
+/* PATCH user */
+router.patch('/:id', verifyUser, verifyRole, foodItemsController.update);
 
 /* DELETE user */
 router.delete('/:id', verifyUser, verifyRole, foodItemsController.remove);

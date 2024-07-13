@@ -8,7 +8,9 @@ async function verifyUser(req, res, next) {
     try {
         const authHeader = req.headers["cookie"]; // get the session cookie from request header
         console.log({ authHeader })
-        if (!authHeader) return res.sendStatus(401); // if there is no cookie from request header, send an unauthorized response.
+        if (!authHeader)
+            return res.status(401)
+                .json({ message: "User unauthorized. Please login" }); // if there is no cookie from request header, send an unauthorized response.
         const cookie = authHeader.split("=")[1]; // If there is, split the cookie string to get the actual jwt
         console.log({ cookie });
         // Verify using jwt to see if token has been tampered with or if it has expired.

@@ -52,12 +52,14 @@ const { handleHashed, verifyHashed } = require('../utils/encryption.util');
 
 async function login(req, res, next) {
   try {
-    const { userName, password } = req.body;
-    if (!userName || !password) throw new Error('provide username and password');
+    const { username, password } = req.body;
+    if (!username && !password) throw new Error('provide username and password');
 
-
-    const resUser = await user.getSingle({ userName, password });
-    console.log({ resUser })
+    const resUser = await user.getSingle({ username });
+    if (!resUser) return res.status(401).json({
+      status: "failed",
+      message: "Invalid username. Please try again with the correct credentials.",
+    });
 
     // validate password
     const isPasswordValid = await verifyHashed(password, resUser.password);
@@ -67,40 +69,40 @@ async function login(req, res, next) {
     if (!isPasswordValid)
       return res.status(401).json({
         status: "failed",
-        data: [],
         message: "Invalid username or password. Please try again with the correct credentials.",
       });
 
     let options = {
-      maxAge: 20 * 60 * 1000, // would expire in 20minutes
+      maxAge: 24 * 60 * 60 * 1000, // would expire in 1day
       // httpOnly: true, // The cookie is only accessible by the web server
       // secure: true,
-      sameSite: "None",
+      // sameSite: "None",
     };
 
     const token = generateToken(resUser); // generate session token for user
-    res.cookie("SessionID", token, options); // set the token to response header, so that the client sends it back on each subsequent request
+    // res.cookie("SessionID", token, options); // set the token to response header, so that the client sends it back on each subsequent request
+    res.cookie("Authorization", token); // set the token to response header, so that the client sends it back on each subsequent request
 
     res.status(200).json({
       status: "success",
       message: "You have successfully logged in.",
     });
-    // } catch (err) {
-    //   res.status(500).json({
-    //     status: "error",
-    //     code: 500,
-    //     data: [],
-    //     message: "Internal Server Error",
-    //   });
-    // }
-    // res.json(await programmingLanguages.create(req.body));
+
   } catch (err) {
     console.error(`Error while Login`, err.message);
     next(err);
   }
 }
 
+async function verify(req, res, next) {
+
+  const user = JSON.parse(JSON.stringify(req.user || null))
+  if (user) delete user.password;
+  if (!user) return res.status(401).json({ status: "failed", message: "user not founds" });
+  res.status(200).json({user})
+}
 
 module.exports = {
-  login
+  login,
+  verify
 };

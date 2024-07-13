@@ -55,13 +55,13 @@ async function update(req, res, next) {
         message: "no valid fields found to update",
       });
 
-    const isAlreadyHave = await foodCategories.getSingle({ name });
+    // const isAlreadyHave = await foodCategories.getSingle({ name });
 
-    if (isAlreadyHave)
-      return res.status(401).json({
-        status: "failed",
-        message: "This food name isn't available to update",
-      });
+    // if (isAlreadyHave)
+    //   return res.status(401).json({
+    //     status: "failed",
+    //     message: "This food name isn't available to update",
+    //   });
 
     const updateDatas = {
       name: name
