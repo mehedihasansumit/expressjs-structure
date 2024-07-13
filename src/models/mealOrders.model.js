@@ -1,28 +1,28 @@
 const { sequelize, Sequelize } = require("../services/db.service");
 const FoodItem = require("./foodItems.model");
-
-const MealWeekDay = require("./mealWeekDays.model");
+const User = require("./users.model");
 const { DataTypes } = Sequelize;
 
-const Meal = sequelize.define("meals", {
+const MealOrder = sequelize.define("mealOrders", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true
   },
-  dayId: {
+  userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
 });
 // Meal.belongsToMany(FoodItem, { through: 'mealFoodItems' });
-Meal.belongsTo(MealWeekDay, {
-  foreignKey: "dayId",
-  as: "day",
+MealOrder.belongsTo(User, {
+  foreignKey: "userId",
+  as: "user",
   allowNull: false
 });
+MealOrder.belongsToMany(FoodItem, { through: 'mealOrderFoodItems' });
 
 
-module.exports = Meal;
+module.exports = MealOrder;
 
 

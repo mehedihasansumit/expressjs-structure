@@ -20,8 +20,8 @@ app.use(
 );
 
 sequelize.sync(
-  // { force: true }
-  { alter: true }
+  { force: true }
+  // { alter: true }
 )
   .then(() => {
     console.log("Synced db.");
