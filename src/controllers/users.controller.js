@@ -1,5 +1,5 @@
-const users = require('../services/users.service');
-const { handleHashed } = require('../utils/encryption.util');
+const users = require('../services/users.service.js');
+const { handleHashed } = require('../utils/encryption.util.js');
 
 async function get(req, res, next) {
   try {
@@ -38,7 +38,7 @@ async function create(req, res, next) {
 
     res.json(await users.create(datas));
   } catch (err) {
-    console.error(`Error while creating programming language`, err.message);
+    console.error(`Error while creating user`, err.message);
     next(err);
   }
 }
@@ -84,7 +84,7 @@ async function update(req, res, next) {
 
     res.status(200).json({ status: "success", message: "successfully updated" });
   } catch (err) {
-    console.error(`Error while updating programming language`, err.message);
+    console.error(`Error while updating user`, err.message);
     next(err);
   }
 }
@@ -107,7 +107,7 @@ async function remove(req, res, next) {
 
     res.status(200).json({ status: "success", message: "successfully deleted" });
   } catch (err) {
-    console.error(`Error while deleting programming language`, err.message);
+    console.error(`Error while deleting user`, err.message);
     next(err);
   }
 }

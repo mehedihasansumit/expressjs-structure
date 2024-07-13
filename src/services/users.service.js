@@ -1,7 +1,7 @@
 const db = require('../models/index.js');
 const helper = require('../utils/helper.util');
 const config = require('../configs/general.config');
-const { Op, where } = require('sequelize');
+const { Op } = require('sequelize');
 
 const User = db.User;
 

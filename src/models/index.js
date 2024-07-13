@@ -17,5 +17,7 @@ const db = {};
 db.testDbConnection = testDbConnection;
 
 db.User = require("./users.model.js")(sequelize, Sequelize.DataTypes);
+db.FoodItem = require("./foodItems.model.js")(sequelize, Sequelize.DataTypes);
+db.FoodCategory = require("./foodCategories.model.js")(sequelize, Sequelize.DataTypes);
 
 module.exports = db;

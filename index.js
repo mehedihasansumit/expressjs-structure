@@ -5,6 +5,9 @@ const port = process.env.PORT || 3000;
 const { sequelize } = require("./src/services/db.service.js");
 const userRoute = require("./src/routes/usersRoute.js");
 const authRoute = require("./src/routes/authRoute.js");
+const foodCategoryRoute = require("./src/routes/foodCategoriesRoute.js");
+const foodItemRoute = require("./src/routes/foodItemsRoute.js");
+
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -33,6 +36,8 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/food_categories', foodItemRoute);
+app.use('/api/food_items', foodCategoryRoute);
 
 /* Error handler middleware */
 app.use((err, req, res, next) => {
